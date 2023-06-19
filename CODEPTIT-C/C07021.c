@@ -1,48 +1,45 @@
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 
 typedef struct SinhVien {
+	char ten[55];
 	int ma;
-	char ten[50];
-	char d1[10], d2[10], d3[10];
+	double a, b, c, tongdiem;
 } sv;
 
-int k=1;
-
-void nhap(sv *a) {
-	gets(a->ten);
-	scanf("%s%s%s",&a->d1, &a->d2, &a->d3);
-	getchar();
-}
-
-sv arr[10000];
-
 int main() {
+	sv arr[100];
+	int idx=1;
 	int n;
-	while(scanf("%d",&n)!=-1) {
-		getchar();
+	int k;
+	while(scanf("%d\n",&n)!=-1) {
 		if(n==1) {
-			int them;
-			scanf("%d",&them);
-			getchar();
-			for(int i=0; i<them; i++) {
-				nhap(&arr[k]);
-				arr[k].ma=k;
-				k++;
+			scanf("%d\n",&k);
+			for(int i=0; i<k; ++i) {
+				arr[idx].ma=idx;
+				gets(arr[idx].ten);
+				scanf("%lf%lf%lf\n", &arr[idx].a, &arr[idx].b, &arr[idx].c);
+				arr[idx].tongdiem=arr[idx].a+arr[idx].b+arr[idx].c;
+				++idx;
 			}
-			printf("%d\n",them);
+			printf("%d\n",k);
 		} else if(n==2) {
-			int sua;
-			scanf("%d",&sua);
-			getchar();
-			nhap(&arr[sua]);
-			printf("%d\n",sua);
+			scanf("%d\n",&k);
+			gets(arr[k].ten);
+			scanf("%lf%lf%lf", &arr[k].a, &arr[k].b, &arr[k].c);
+			arr[k].tongdiem=arr[k].a+arr[k].b+arr[k].c;
+			printf("%d\n",k);
 		} else {
-			for(int i=k-1; i>=1; i--) {
-				printf("%d %s %s %s %s\n", arr[i].ma, arr[i].ten, arr[i].d1, arr[i].d2, arr[i].d3);
+			for(int i=1; i<idx; ++i) {
+				for(int j=i+1; j<idx; ++j) {
+					if(arr[i].tongdiem>arr[j].tongdiem) {
+						sv tmp=arr[i];
+						arr[i]=arr[j];
+						arr[j]=tmp;
+					}
+				}
 			}
+			for(int i=1; i<idx; ++i) printf("%d %s %.1lf %.1lf %.1lf\n", arr[i].ma, arr[i].ten, arr[i].a, arr[i].b, arr[i].c);
 		}
 	}
 }
-

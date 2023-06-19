@@ -1,36 +1,27 @@
 #include <stdio.h>
 #include <math.h>
-#include <string.h>
 
-int main() {
-	int n,m,k;
-	scanf("%d%d%d",&n,&m,&k);
-	int check[1010]= {};
+int main(){
+	int n;
+	scanf("%d",&n);
+	int m, k;
+	scanf("%d%d",&m,&k);
 	int arr[m];
-	for(int i=0; i<m; i++) {
+	int check[1005]={};
+	for(int i=0;i<m;++i){
 		scanf("%d",&arr[i]);
-		int j=arr[i]-k;;
-		if(arr[i]-k<=1) j=1;
-		int max=arr[i]+k;;
-		if(arr[i]+k>=n) max=n;
-		for(j; j<=max; j++) {
-			check[j]=1;
-		}
+		for(int j=fmax(1, arr[i]-k);j<=fmin(n, arr[i]+k);++j) check[j]=1;
 	}
 	int res=0;
-	for(int i=1; i<=n; i++) {
-		if(check[i]==0) {
-			int o=i+k;
-			if(o>n) o=n;
-			for(o; o>=i; o--) {
-				if(check[o]==0) {
-					int nan=o+k;
-					if(o+k>n) nan=n;
-					for(int b=i; b<=nan; b++) check[b]=1;
-					res++;
-					break;
-				}
+	for(int i=1;i<=n;++i){
+		if(!check[i]){
+			int cnt=0;
+			for(int j=i;j<=n;++j){
+				if(check[j]) break;
+				++cnt;
 			}
+			res+=(cnt/(2*k+1)+(cnt%(2*k+1)!=0));
+			i+=cnt-1;
 		}
 	}
 	printf("%d",res);

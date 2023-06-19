@@ -1,21 +1,24 @@
 #include <stdio.h>
 #include <math.h>
-#include <string.h>
 
-int main() {
-	int a;
-	scanf("%d",&a);
-	while(a--) {
-		int n,p;
-		scanf("%d%d",&n,&p);
-		int res=0;
-		for(int i=2; i<=n; i++) {
-			int tmp=i;
-			while(tmp%p==0) {
-				tmp/=p;
-				res++;
-			}
-		}
-		printf("%d\n",res);
+int legendre(int n, int k){// cong thuc legendre
+	int i=1;
+	int res=0;
+	while(1){
+		int tmp=pow(k,i);
+		res+=n/tmp;
+		if(n/tmp<=1) break;
+		++i;
+	}
+	return res;
+}
+
+int main(){
+	int t;
+	scanf("%d",&t);
+	while(t--){
+		int n,k;
+		scanf("%d%d",&n,&k);
+		printf("%d\n",legendre(n,k));	
 	}
 }

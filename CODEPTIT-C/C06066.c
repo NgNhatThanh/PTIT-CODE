@@ -1,75 +1,52 @@
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 
-char in[205];
+char n[205];
 
-void rev(char n[]) {
-	for(int i=0; i<strlen(n)/2; i++) {
-		char tmp=n[i];
-		n[i]=n[strlen(n)-i-1];
-		n[strlen(n)-i-1]=tmp;
+void ncpy(char des[], int st, int end){
+	int i=0;
+	for(int j=st;j<=end;++j) des[i++]=n[j];
+	des[i]='\0';
+}
+
+void rev(){
+	int l=0, r=strlen(n)-1;
+	while(l<r){
+		char tmp=n[l];
+		n[l]=n[r];
+		n[r]=tmp;
+		++l; --r;
 	}
 }
 
-void copya(char a[]){
+void tong(char a[], char b[]){
+	int i=strlen(a)-1, j=strlen(b)-1;
 	int k=0;
-	for(int i=0;i<strlen(in)/2;i++){
-		a[k++]=in[i];
-	}
-	a[k]='\0';
-}
-
-void copyb(char b[]){
-	int k=0;
-	for(int i=strlen(in)/2;i<strlen(in);i++){
-		b[k++]=in[i];
-	}
-	b[k]='\0';
-}
-
-void sum(char a[], char b[]) {
-	char res[505];
-	if(strlen(a)<strlen(b)) {
-		char tp[505];
-		strcpy(tp,a);
-		strcpy(a,b);
-		strcpy(b,tp);
-	}
-	rev(a);
-	rev(b);
-	if(strlen(a)==strlen(b)){
-		if(b[strlen(b)-1]=='0') b[strlen(b)-1]='\0';
-	}
-	else{
-		if(a[strlen(a)-1]=='0') a[strlen(a)-1]='\0';
-	}
 	int du=0;
-	for(int i=0; i<strlen(a); i++) {
-		int tmp=a[i]-48;
-		if(i<strlen(b)) tmp+=b[i]-48;
-		tmp+=du;
+	while(i>=0 || j>=0){
+		int sum=du+a[i]-'0';
 		du=0;
-		if(tmp>=10) {
-			du+=tmp/10;
-			tmp%=10;
+		if(j>=0) sum+=b[j]-'0';
+		if(sum>9){
+			du=1;
+			sum-=10;
 		}
-		res[i]=tmp+48;
+		n[k++]=sum+'0';
+		--i; --j;
 	}
-	if(du) {
-		res[strlen(a)]=du+48;
-		res[strlen(a)+1]='\0';
-	} else res[strlen(a)]='\0';
-	rev(res);
-	strcpy(in,res);
+	if(du) n[k++]=du+'0';
+	n[k]='\0';
+	rev();
 }
 
-int main() {
-	gets(in);
-	while(strlen(in)>1){
-		char a[110], b[110];
-		copya(a); copyb(b);
-		sum(a,b);
-		printf("%s\n",in);
+int main(){
+	fgets(n, 205, stdin);
+	n[strlen(n)-1]='\0';
+	while(strlen(n)>1){
+		char firstPart[105], secondPart[105];
+		ncpy(firstPart, 0, strlen(n)/2-1);
+		ncpy(secondPart, strlen(n)/2, strlen(n)-1);
+		tong(secondPart, firstPart);
+		printf("%s\n",n);
 	}
 }

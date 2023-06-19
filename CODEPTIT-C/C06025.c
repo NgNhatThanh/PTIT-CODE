@@ -1,64 +1,42 @@
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
-// Bai nay sub tren CodePtit thoi chu bai khac co the sai, minh lam khong chi tiet va chuan
-void rev(char n[]) {
-	for(int i=0; i<strlen(n)/2; i++) {
-		char tmp=n[i];
-		n[i]=n[strlen(n)-i-1];
-		n[strlen(n)-i-1]=tmp;
-	}
-}
 
-int main() {
-	int a;
-	scanf("%d",&a);
-	getchar();
-	while(a--) {
-		char a[1010], b[1010];
-		int k=0;
-		gets(a);
-		gets(b);
-		if(strcmp(a,b)==0) printf("0\n");
-		else {
-			char res[1010];
-			if(strlen(a)<strlen(b) || (strlen(a)==strlen(b) && strcmp(a,b)<0)) {
-				char tp[1010];
-				strcpy(tp,a);
-				strcpy(a,b);
-				strcpy(b,tp);
-			}
-			rev(a);
-			rev(b);
-			int muon=0;
-			for(int i=0; i<strlen(a); i++) {
-				int tmp=a[i]-48;
-				tmp-=muon;
-				muon=0;
-				if(i<strlen(b)) {
-					int tmp2=b[i]-48;
-					if(tmp2>tmp) {
-						muon++;
-						tmp+=(10-tmp2);
-					} else tmp-=tmp2;
-				} else {
-					if(tmp<muon) {
-						tmp+=(10-muon);
-						muon=1;
-					} else {
-						tmp-=muon;
-						muon=0;
-					}
-				}
-				res[k++]=tmp+48;
-			}
-			for(int i=strlen(res)-1; i>=0; i--) {
-				if(res[i]>'0' && res[i]<='9') break;
-				else res[i]='\0';
-			}
-			rev(res);
-			printf("%s\n",res);
+char a[505], b[505];
+char res[505];
+
+void hieu(char a[], char b[]){
+	memset(res, '0', sizeof(res));
+	if(strlen(a)<strlen(b) || (strlen(a)==strlen(b) && strcmp(a,b)<0)){
+		char tmp[505];
+		strcpy(tmp, a);
+		strcpy(a,b);
+		strcpy(b,tmp);
+	}
+	int i=strlen(a)-1, j=strlen(b)-1;
+	int k=0;
+	int du=0;
+	while(i>=0 || j>=0){
+		int cal=a[i]-'0'-du;
+		du=0;
+		if(j>=0) cal-=(b[j]-'0');
+		if(cal<0){
+			du=1;
+			cal+=10;
 		}
+		res[k++]=cal+'0';
+		--i; --j;
 	}
+	while(res[k]=='0') --k;
+	for(int i=k;i>=0;--i) printf("%c",res[i]);
+	printf("\n");
 }
 
+int main(){
+	int t;
+	scanf("%d\n",&t);
+	while(t--){
+		scanf("%s",a);
+		scanf("%s",b);
+		hieu(a,b);
+	}
+}

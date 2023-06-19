@@ -1,26 +1,28 @@
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
-
-int check(int a, int b,int c,int d, int e, int f) {
-	int maxdai = fmax(a, fmax(c,e));
-	int maxrong = fmax(b, fmax(d,f));
-	if(maxdai==a+c && maxdai==b+f && b==d) return 1;
-	if(maxdai==a+e && maxdai==d+b && b==f) return 1;
-	if(maxdai==e+c && maxdai==b+d && f==d) return 1;
-	if(maxrong==b+d && maxrong==e+a && a==c) return 1;
-	if(maxrong==b+f && maxrong==a+c && a==e) return 1;
-	if(maxrong==f+d && maxrong==a+e && e==c) return 1;
-	if(a==c && a==e && b==d && b==f && b==a/3) return 1;
-	if(a==c && a==e && b==d && b==f && a==b/3) return 1;
-	return 0;
-}
+#include <math.h>
 
 int main() {
-	int a,b,c,d,e,f;
-	scanf("%d%d%d%d%d%d",&a,&b,&c,&d,&e,&f);
-	if(check(a,b,c,d,e,f) || check(b,a,c,d,e,f) || check(a,b,d,c,e,f) || check(a,b,c,d,f,e) || check(b,a,d,c,f,e) || check(b,a,c,d,f,e) || check(b,a,d,c,e,f) || check(a,b,d,c,f,e)) {
+	int c[6];
+	int tong=0;
+	for(int i=0;i<6;++i){
+		scanf("%d",&c[i]);
+		tong+=c[i];
+	}
+	int dt=c[0]*c[1]+c[2]*c[3]+c[4]*c[5];
+	if(sqrt(dt)!=(int)sqrt(dt)) printf("NO");
+	else if(c[0]==c[2] && c[0]==c[4] && c[1]+c[3]+c[5]==c[0]){// truong hop 3 hinh ghep chong len nhau
 		printf("YES");
-	} else printf("NO");
+	}
+	else{// truong hop 2 hinh ngan va 1 hinh dai
+		int canh=sqrt(dt);
+		for(int i=0;i<6;++i){
+			int tmp=tong+c[i];
+			if(tmp%4==0 && (tmp/4)==canh){
+				printf("YES");
+				return 0;
+			}
+		}
+		printf("NO");
+	}
 }
-

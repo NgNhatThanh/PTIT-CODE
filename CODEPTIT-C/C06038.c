@@ -1,128 +1,83 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include <string.h>
+#include <math.h>
 
-void rev(char n[]) {
-	for(int i=0; i<strlen(n)/2; i++) {
-		char tmp=n[i];
-		n[i]=n[strlen(n)-i-1];
-		n[strlen(n)-i-1]=tmp;
+char n[65];
+int len;
+char kqnhan[150];
+
+int check(char a[], char b[]) { // kiem tra xem co the xoay vong xau sau khi nhan ve xau ban dau hay khong
+	int i=1;
+	while(1) {
+		int k=0;
+		char tmp[65];
+		for(int j=i; j<strlen(a); ++j) tmp[k++]=a[j];
+		for(int j=0; j<i; ++j) tmp[k++]=a[j];
+		tmp[k]='\0';
+		++i;
+		if(strcmp(tmp, a)==0) return 0;
+		if(strcmp(tmp, b)==0) return 1;
 	}
 }
 
-void xoayvong(char n[], char check[][65]) {
-	int k=0;
-	char tmp[100];
-	strcpy(tmp,n);
-	strcpy(check[k++], tmp);
-	int dai =strlen(n);
-	while(k<dai) {
-		char tam=tmp[0];
-		for(int i=0; i<dai-1; i++) {
-			tmp[i]=tmp[i+1];
+void rev(char a[]) {
+	int l=0, r=strlen(a)-1;
+	while(l<r) {
+		char tmp=a[l];
+		a[l]=a[r];
+		a[r]=tmp;
+		++l;
+		--r;
+	}
+}
+
+void nhan(char a[], char b[]) {
+	int res[150]= {};
+	rev(a), rev(b);
+	int bien=0;
+	for(int i=0; i<strlen(a); ++i) {
+		for(int j=0; j<strlen(b); ++j) {
+			res[i+j]+=(a[i]-'0')*(b[j]-'0');
+			if(res[i+j]>9) {
+				bien=fmax(bien, i+j+1);
+				res[i+j+1]+=res[i+j]/10;
+				res[i+j]%=10;
+			}
+			bien=fmax(bien, i+j);
 		}
-		tmp[dai-1]=tam;
-		strcpy(check[k++], tmp);
 	}
-}
+	if(bien+1>len) {
+		while(res[bien]==0) --bien;
+	}
+	int l=0;
+	for(int i=bien; i>=0; --i) {
+		kqnhan[l++]=res[i]+'0';
+	}
+	kqnhan[l]='\0';
 
-int ck(char n[], char check[][65], int k) {
-	for(int i=0; i<k; i++) {
-		if(strcmp(n, check[i])==0) return 1;
-	}
-	return 0;
-}
-
-void tong(char a[], char b[], char res[], int n) {
-	rev(a);
-	rev(b);
-	int du=0;
-	if(strlen(a)<strlen(b)) {
-		char tp[505];
-		strcpy(tp,a);
-		strcpy(a,b);
-		strcpy(b,tp);
-	}
-	int dai1=strlen(a);
-	int dai2=strlen(b);
-	for(int i=0; i<dai1; i++) {
-		int tmp=a[i]-48;
-		if(i<dai2) tmp+=b[i]-48;
-		tmp+=du;
-		du=0;
-		if(tmp>=10) {
-			du+=tmp/10;
-			tmp%=10;
-		}
-		res[i]=tmp+48;
-	}
-	if(du) {
-		res[dai1]=du+48;
-		res[dai1+1]='\0';
-	} else res[dai1]='\0';
-	if(res[dai1-1]=='0' && strlen(res)>n) res[dai1-1]='\0';
-	rev(res);
-}
-
-void nhan(char a[], char b, char res[], int check) {
-	if(check) res[0]='0';
-	int k=check;
-	int hs=b-48;
-	char tam[100];
-	strcpy(tam,a);
-	int dai1=strlen(tam);
-	int du=0;
-	for(int i=dai1-1; i>=0; i--) {
-		int tmp=tam[i]-48;
-		int xet=tmp*hs;
-		xet+=du;
-		du=0;
-		if(xet>=10) {
-			du+=(xet)/10;
-			res[k++]=(xet)%10+48;
-		} else res[k++]=(xet)%10+48;
-	}
-	if(du) res[k++]=du+48;
-	res[k]='\0';
-	rev(res);
 }
 
 void process() {
-	char n[65];
-	gets(n);
-	char check[65][65];
-	xoayvong(n, check);
-	int dai=strlen(n);
-	for(int i=1; i<=dai; i++) {
-		char tmp[4];
-		sprintf(tmp, "%d", i);
-		char res1[70], res2[70], res[66];
-		if(i<10) {
-			nhan(n, tmp[0], res1,0);
-			if(ck(res1, check, dai)==0) {
-				printf("NO\n");
-				return;
-			}
-		} else {
-			nhan(n, tmp[1], res1, 0);
-			nhan(n, tmp[0], res2, 1);
-			tong(res1, res2, res, dai);
-			if(ck(res, check, dai)==0) {
-				printf("NO\n");
-				return ;
-			}
+	scanf("%s",n);
+	len=strlen(n);
+	for(int i=2; i<=len; ++i) {
+		char i_str[65];
+		sprintf(i_str, "%d", i);// chuyen chu thanh xau
+		char tmp[65];
+		strcpy(tmp, n);
+		nhan(tmp, i_str);
+		if(!check(kqnhan, n)) {
+			printf("NO\n");
+			return;
 		}
 	}
 	printf("YES\n");
-
 }
 
 int main() {
-	int a;
-	scanf("%d",&a);
-	getchar();
-	while(a--) {
+	int t;
+	scanf("%d",&t);
+	while(t--) {
 		process();
 	}
 }

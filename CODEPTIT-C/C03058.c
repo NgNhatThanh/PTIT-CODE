@@ -1,46 +1,23 @@
 #include <stdio.h>
-#include <math.h>
-#include <string.h>
+#define ll long long
 
-int nt[101];
+ll gcd(ll a, ll b){
+	if(!b) return a;
+	return gcd(b, a%b);
+}
 
-void sang() {
-	nt[1]=1;
-	for(int i=2; i<=10; i++) {
-		for(int j=i*i; j<=100; j+=i) nt[j]=1;
-	}
+ll lcm(ll a ,ll b){
+	return (a*b)/gcd(a,b);
 }
 
 int main() {
-	sang();
-	int a;
-	scanf("%d",&a);
-	while(a--) {
+	int t;
+	scanf("%d",&t);
+	while(t--){
 		int n;
-		int check[101]= {};
 		scanf("%d",&n);
-		for(int i=2; i<=n; i++) {
-			int tmp=i;
-			for(int j=2; j<=sqrt(i); j++) {
-				int max=0;
-				while(tmp%j==0) {
-					tmp/=j;
-					max++;
-				}
-				if(max>check[j]) check[j]=max;
-			}
-			if(tmp!=1) {
-				if(check[tmp]<1) check[tmp]=1;
-			}
-		}
 		long long res=1;
-		for(int i=2; i<=100; i++) {
-			if(check[i]) {
-				long long add=pow(i,check[i]);
-				res*=add;
-			}
-		}
+		for(ll i=2;i<=n;++i) res=lcm(res, i);
 		printf("%lld\n",res);
 	}
 }
-

@@ -1,80 +1,43 @@
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
 
-char xoay[55][55];
+char inp[55][55];
 
-int kt[55]= {1};
-
-int k=0;
-
-void xoayvong(char s[]) { // Sinh ra cac xau xoay vong cua s
-	strcpy(xoay[k++], s);
-	int dai =strlen(s);
-	while(k<dai) {
-		char tam=s[0];
-		for(int i=0; i<dai-1; i++) {
-			s[i]=s[i+1];
-		}
-		s[dai-1]=tam;
-		strcpy(xoay[k++], s);
+int xoay(char a[], char b[]){// dem so lan cay xoay de xau a thanh xau b, neu khong xoay duoc thi return -1
+	int cnt=0;
+	int i=0;
+	while(1){
+		char xoay[55];
+		int k=0;
+		for(int j=i;j<strlen(a);++j) xoay[k++]=a[j];
+		for(int z=0;z<i;++z) xoay[k++]=a[z]; 
+		if(strcmp(xoay,a)==0 && cnt>0) return -1;
+		if(strcmp(xoay, b)==0) return cnt;
+		++cnt;
+		++i;
 	}
 }
 
-int max=-1;
-
-int maxgt=0;
-
-int imax=-1;
-
-int check(char s[]) {
-	int dai = strlen(s);
-	for(int i=0; i<dai; i++) {
-		if(strcmp(s, xoay[i])==0) {
-			kt[i]++;
-			if(kt[i]>=maxgt) {
-				maxgt=kt[i];
-				imax=i;
-			}
-			if(i>max) max=i;
-			return 1;
-		}
-	}
-	return 0;
-}
-
-int main() {
+int main(){
 	int n;
 	scanf("%d",&n);
-	getchar();
-	char s[55];
-	gets(s);
-	xoayvong(s);
-	int cnt=0;
-	for(int i=1; i<n; i++) {
-		char tmp[60];
-		gets(tmp);
-		if(!check(tmp)) {
-			cnt++;
-		}
+	for(int i=0;i<n;++i){
+		scanf("%s",inp[i]);
 	}
-	if(cnt) {
-		printf("-1");
-	} else {
-		int dai = strlen(s);
-		int max=10000000;
-		for(int i=0; i<dai; i++) {
-			if(kt[i]) {
-				int res=0;
-				for(int j=0; j<i; j++) {
-					res+=kt[j]*(i-j);
+	int res=1e9;
+	for(int i=0;i<n;++i){
+		int cnt=0;
+		for(int j=0;j<n;++j){
+			if(j!=i){
+				int add=xoay(inp[j], inp[i]);
+				if(add==-1){
+					printf("-1");
+					return 0;
 				}
-				for(int j=i+1; j<dai; j++) {
-					res+=kt[j]*(dai-(j-i));
-				}
-				if(res<max) max=res;
+				cnt+=add;
 			}
 		}
-		printf("%d",max);
+		res=fmin(res, cnt);
 	}
+	printf("%d",res);
 }
