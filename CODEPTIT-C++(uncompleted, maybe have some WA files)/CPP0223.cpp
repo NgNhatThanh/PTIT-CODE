@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+  int t;
+  cin >> t;
+  while(t--){
+    int n, m;
+    cin >> n >> m;
+    int a[n][m];
+    for(int i=0; i<n; ++i){
+      for(int j=0; j<m; ++j) cin >> a[i][j];
+    }
+    int top = 1, down = n-1, left = 0, right = m-1;
+    int check = 1;
+    int i = 0, j = 0;
+    int cnt = 0;
+    while(cnt < m*n){
+      if(check){
+        check = 0;
+        for(; j<=right; ++j) cout << a[i][j] << ' ', ++cnt;
+        --j;
+        ++i;
+        --right;
+        for(; i<=down; ++i) cout << a[i][j] << ' ', ++cnt;
+        --i;
+        --j;
+        --down;
+      }
+      else{
+        check = 1;
+        for(; j>=left; --j) cout << a[i][j] << ' ', ++cnt;
+        ++j;
+        --i;
+        ++left;
+        for(; i>=top; --i) cout << a[i][j] << ' ', ++cnt;
+        ++i;
+        ++j;
+        ++top;
+      }
+    }
+    cout << '\n';
+  }
+}
