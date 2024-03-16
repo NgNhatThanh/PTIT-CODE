@@ -50,7 +50,7 @@
             this.style.backgroundColor = "lightgreen";
             setTimeout(function(){
                 btn.style.backgroundColor = "lightgrey";
-            }, 300);
+            }, 150);
         });
     }
 
