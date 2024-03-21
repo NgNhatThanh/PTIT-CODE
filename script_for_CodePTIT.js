@@ -41,9 +41,9 @@
         for(var i = 0; i < tmp.length; ++i){
             if(tmp[i] !== "\t") inp += tmp[i];
         }
-
+        
         btn.style.backgroundColor = "lightgrey";
-
+        
         btn.addEventListener("click", function(){
             copy(inp);
             btn.textContent = "Copied";
