@@ -39,7 +39,7 @@
         var tmp = inp;
         inp = "";
         for(var i = 0; i < tmp.length; ++i){
-            if(tmp[i] !== "\t") inp += tmp[i];
+            if(tmp[i] !== "\t" && tmp[i] !== '\u00a0') inp += tmp[i];
         }
         
         btn.style.backgroundColor = "lightgrey";
