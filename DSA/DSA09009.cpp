@@ -2,8 +2,8 @@
 #define ll long long
 using namespace std;
 
-vector<int> ke[1005];
 int vst[1005];
+vector<int> ke[1005];
 
 void bfs(int u){
     queue<int> q;
@@ -18,34 +18,31 @@ void bfs(int u){
                 q.push(x);
             }
         }
-    }   
+    }
 }
 
-void solve(){   
-    int v, e, x ,y;
+void solve(){
+    int v, e, x, y;
     cin >> v >> e;
-    cout << v << ' ' << e << '\n';
     while(e--){
         cin >> x >> y;
-        cout << x << ' ' << y << '\n';
         ke[x].push_back(y);
         ke[y].push_back(x);
     }
-    int cnt = 0;
+    int res = 0;
     for(int i = 1; i <= v; ++i){
         if(!vst[i]){
-            ++cnt;
+            ++res;
             bfs(i);
         }
-    }
-    cout << cnt << '\n';
-    for(int i = 1; i <= v; ++i){
-        vst[i] = 0;
         ke[i].clear();
+        vst[i] = 0;
     }
+    cout << res << '\n';
 }
 
 int main(){
+    ios_base::sync_with_stdio(0);
     int t = 1;
     cin >> t;
     while(t--){
