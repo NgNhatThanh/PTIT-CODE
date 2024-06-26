@@ -1,41 +1,40 @@
 #include <bits/stdc++.h>
-#define ll long long
 using namespace std;
 
+int v, e, x, y;
 vector<int> ke[1005];
 int vst[1005];
-int ok;
 
-void dfs(int u, int en){
+vector<pair<int, int>> edges;
+
+void dfs(int u){
     vst[u] = 1;
     for(int x : ke[u]){
-        if(x == en){
-            ok = 1;
-            return;
-        }
         if(!vst[x]){
-            dfs(x, en);
+            edges.push_back({u, x});
+            dfs(x);
         }
     }
 }
 
 void solve(){
-    int v, e, x, y, q;
-    cin >> v >> e;
+    int u;
+    cin >> v >> e >> u;
     while(e--){
         cin >> x >> y;
         ke[x].push_back(y);
         ke[y].push_back(x);
     }
-    cin >> q;
-    while(q--){
-        cin >> x >> y;
-        dfs(x, y);
-        (ok) ? cout << "YES\n" : cout << "NO\n";
-        ok = 0;
-        memset(vst, 0, sizeof vst);
+    dfs(u);
+    if(edges.size() != v - 1) cout << "-1\n";
+    else{
+        for(auto x : edges) cout << x.first << ' ' << x.second << '\n';
     }
-    for(int i = 1; i <= v; ++i) ke[i].clear();
+    edges.clear();
+    for(int i = 1; i <= v; ++i){
+        ke[i].clear();
+        vst[i] = 0;
+    }
 }
 
 int main(){
