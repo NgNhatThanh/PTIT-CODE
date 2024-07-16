@@ -6,7 +6,6 @@ vector<int> ke[1005];
 int vst[1005];
 
 void dfs(int u){
-    cout << u << ' ';
     vst[u] = 1;
     for(int x : ke[u]){
         if(!vst[x]) dfs(x);
@@ -14,19 +13,21 @@ void dfs(int u){
 }
 
 void solve(){
-    int v, e, x, y, u;
-    cin >> v >> e >> u;
+    int v, e, x, y, st, en, q;
+    cin >> v >> e;
     while(e--){
         cin >> x >> y;
         ke[x].push_back(y);
         ke[y].push_back(x);
     }
-    dfs(u);
-    for(int i = 1; i <= v; ++i){
-        ke[i].clear();
-        vst[i] = 0;
+    cin >> q;
+    while(q--){
+        cin >> st >> en;
+        dfs(st);
+        cout << (vst[en] ? "YES\n" : "NO\n");
+        memset(vst, 0, (v + 1) * 4);
     }
-    cout << '\n';
+    for(int i = 1; i <= v; ++i) ke[i].clear();
 }
 
 int main(){

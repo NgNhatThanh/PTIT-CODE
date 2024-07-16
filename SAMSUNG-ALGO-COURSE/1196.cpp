@@ -3,39 +3,33 @@
 using namespace std;
 
 vector<int> ke[1005];
-int vst[1005];
+int vst[1005], ok;
 
-void bfs(int u){
-    queue<int> q;
-    q.push(u);
+void dfs(int u, int prev){
     vst[u] = 1;
-    while(!q.empty()){
-        int v = q.front();
-        cout << v << ' ';
-        q.pop();
-        for(int x : ke[v]){
-            if(!vst[x]){
-                vst[x] = 1;
-                q.push(x);
-            }
-        }
+    for(int x : ke[u]){
+        if(!vst[x]) dfs(x, u);
+        else if(x != prev) ok = 1;
     }
-    cout << '\n';
 }
 
 void solve(){
-    int v, e, x, y, u;
-    cin >> v >> e >> u;
+    int v, e, x, y;
+    cin >> v >> e;
     while(e--){
         cin >> x >> y;
         ke[x].push_back(y);
         ke[y].push_back(x);
     }
-    bfs(u);
+    for(int i = 1; i <= v; ++i){
+        if(!vst[i]) dfs(i, i);
+    }
+    cout << (ok ? "YES\n" : "NO\n");
     for(int i = 1; i <= v; ++i){
         ke[i].clear();
         vst[i] = 0;
     }
+    ok = 0;
 }
 
 int main(){
