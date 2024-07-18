@@ -1,0 +1,1 @@
+{"name":"Local: 1220","url":"d:\\PTIT-CODE\\SAMSUNG-ALGO-COURSE\\1220.cpp","tests":[{"id":1721200863670,"input":"5 6\n1 2 6\n1 3 7\n2 4 8\n3 4 9\n3 5 1\n4 5 2\n3\n1 5\n2 5\n4 3\n\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\PTIT-CODE\\SAMSUNG-ALGO-COURSE\\1220.cpp","group":"local","local":true}
