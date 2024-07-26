@@ -1,50 +1,36 @@
 #include <bits/stdc++.h>
 #define ll long long
-
 using namespace std;
-ll res = -1;
-int ok = 1;
 
-void sinh(vector<int> &bit){
-    int i = bit.size() - 1;
-    while(i >= 0 && bit[i] == 1){
-        bit[i] = 0;
-        i--;
-    }
-    if(i < 0) ok = 0;
-    else bit[i] = 1;
-}
-
-int check0(string s){
-    for(char &x : s){
-        if(x=='0') return 1;
+int check(string a, string b){
+    int idx = 0;
+    for(int i = 0; i < a.size(); ++i){
+        if(a[i] == b[idx]) ++idx;
+        if(idx == b.size()) return 1;
     }
     return 0;
 }
 
+void solve(){
+    string s;
+    cin >> s;
+    int n = s.size();
+    int ma = cbrt(stoll(s));
+    for(int i = ma; i >= 1; --i){
+        string tmp = to_string(1ll * i * i * i);
+        if(check(s, tmp)){
+            cout << tmp << '\n';
+            return;
+        }
+    }
+    cout << "-1\n";
+}
+
 int main(){
-    int t;
+    ios_base::sync_with_stdio(0); cin.tie(0);
+	int t = 1;
     cin >> t;
     while(t--){
-        string s;
-        cin >> s;
-        ll a = stoll(s);
-        vector<int> bit(s.size(), 0);
-        while(ok){
-            ll tmp = 0;
-            for(int i=0; i<s.size(); ++i){
-                if(!bit[i]) tmp = tmp*10 + (s[i] - '0'); 
-            }   
-            if(cbrt(tmp) == (int)cbrt(tmp)){
-                res = max(res, tmp);
-            }
-            sinh(bit);
-        }
-        if(!check0(s)){
-            if(!res) res = -1;
-        }
-        cout << res << '\n';
-        res = -1;
-        ok = 1;
-    }   
+        solve();
+    }
 }
